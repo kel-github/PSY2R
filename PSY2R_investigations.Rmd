@@ -1,0 +1,89 @@
+---
+title: "PSY2R_investigations"
+output: html_document
+date: "2023-10-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Investigating implementing PSY functionality in R
+
+1) Using the 'greatest characteristic root' approach for simultaneous test procedures using MANOVA (and by implication, models of univariate data from factorial experiments both between and within factors).
+
+Using this resource to compute Roy's largest root:
+https://rpubs.com/aaronsc32/manova-test-statistics
+
+```{r}
+
+dat <- iris
+dat <- dat %>% select(Sepal.Length, Petal.Length, Species)
+man <- manova(cbind(Sepal.Length, Petal.Length) ~ Species, data = dat)
+root_info <- summary(man)
+
+H <- root_info$SS$Species # hypothesis matrix
+E <- root_info$SS$Residuals # Error matrix
+```
+
+Get the matrix of effects (referred to as the hypothesis matrix)
+
+```{r}
+H
+```
+
+Get the error/residuals matrix
+
+```{r}
+E
+```
+
+Now I compute the thetas/eigenvalues (by multiplyting the determinant of the error matrix with the hypothesis matrix)
+
+```{r}
+
+lambdas <- eigen(solve(E) %*% H)
+```
+
+Now I compute Roy's test - the test statistic is the largest eigenvalue (the largest gamma), we then compute the critical value for the test.
+
+```{r}
+roy_stat <- lambdas$values[1]
+# also can be attained by
+summary(man, 'Roy')$stats[,2][1]
+```
+
+Compute the F statistic:
+
+$\frac{k(n-1)}{k-1} \lambda_1$
+
+where k is the number of groups, and n is the number of cases per group:
+
+```{r}
+
+k <- length(unique(dat$Species))
+n <- nrow(dat)/k # what do you do in the case of uneven groups?
+
+roy_f <- k * (n-1) / (k - 1) * lambdas$values[1]
+roy_f
+
+```
+
+which can also be attained via:
+
+```{r}
+
+summary(man, 'Roy')$stats[,3][1]
+
+```
+
+All the info is here:
+
+```{r}
+
+summary(man, 'Roy')
+
+```
+
+
