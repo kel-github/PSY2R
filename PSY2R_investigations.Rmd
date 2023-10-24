@@ -11,6 +11,8 @@ library(tidyverse)
 
 ## Investigating implementing PSY functionality in R
 
+### Roy's largest root
+
 1) Using the 'greatest characteristic root' approach for simultaneous test procedures using MANOVA (and by implication, models of univariate data from factorial experiments both between and within factors).
 
 Using this resource to compute Roy's largest root:
@@ -46,7 +48,7 @@ Now I compute the thetas/eigenvalues (by multiplyting the determinant of the err
 lambdas <- eigen(solve(E) %*% H)
 ```
 
-Now I compute Roy's test - the test statistic is the largest eigenvalue (the largest gamma), we then compute the critical value for the test.
+Now I compute Roy's test - the test statistic is the largest eigenvalue (the largest gamma), we then compute the critical value for the test. NOTE: computing the critical value is the rub.
 
 ```{r}
 roy_stat <- lambdas$values[1]
@@ -85,5 +87,21 @@ All the info is here:
 summary(man, 'Roy')
 
 ```
+
+### Studentised maximum root distribution
+
+Ref: [Boik (1993). The Analysis of Two-Factor Interactions in Fixed Effects Linear Models] (https://www.jstor.org/stable/1165181)
+
+Point: after an omnibus null hypothesis has been rejected, it is typical for people to follow up an interaction with simple effects contrasts for each level of B, at each level of A. This is problematic, because the corresponding null is that all B-related main effects are equal to each other AND equal to zero - i.e. the null hypothesis is stated as $\mathrm{Mc_{B} = 0}$.
+
+What is required instead is a _partial interaction hypothesis_: $\mathrm{H_{0}} = \mathrm{C_{A}'MC_{B}}$. This states that the effects of B are equal at each level of A, but does not also state that the B effects are related to zeros.
+
+Maximal F-test - LRT test of the _partial interaction hypothesis_ (which uses the sum of all interaction effects) is not as powerful as the competing test which considers only product contrasts.
+
+Roy's (1953) test based on the union-intersection principle is $\mathrm{R = max } T \mathrm{c_A, c_B}$ (see above).
+
+When data is balanced and there are no covariates, the exact null of $R$ is known. This is the _Studentized maximum root (SMR)_ distribution.
+
+Note that this paper also has formula for computing the simultaneous confidence intervals for either all contrasts, or the product contrasts. 
 
 
