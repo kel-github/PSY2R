@@ -3,4 +3,7 @@
 Kelly Garner, 2023  
 <br>
 
-Working out how to reproduce PSY functions in R.  
+Translating the Psy software package to R  
+
+[*PSY*](https://www.unsw.edu.au/science/our-schools/psychology/our-research/research-tools/psy-statistical-program)  
+
