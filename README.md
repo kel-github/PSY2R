@@ -7,7 +7,8 @@ Translating the Psy software package to R Code and functions
 
 **Resources**  
 <br>
-[PSY](https://www.unsw.edu.au/science/our-schools/psychology/our-research/research-tools/psy-statistical-program) <br>
+[PSY](https://www.unsw.edu.au/science/our-schools/psychology/our-research/research-tools/psy-statistical-program)  
+<br>
 [R package for Approximating GCR Critical Statistic](https://github.com/cran/RMTstat)  
 <br>
 [Good webpage for contrast coding](https://marissabarlaz.github.io/portfolio/contrastcoding/)  
