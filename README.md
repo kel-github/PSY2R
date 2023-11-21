@@ -5,7 +5,8 @@ Kelly Garner, 2023
 
 Translating the Psy software package to R Code and functions
 
-**Resources**
+**Resources**  
+<br>
 [PSY](https://www.unsw.edu.au/science/our-schools/psychology/our-research/research-tools/psy-statistical-program) <br>
 [R package for Approximating GCR Critical Statistic](https://github.com/cran/RMTstat)  
 <br>
