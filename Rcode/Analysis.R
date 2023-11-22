@@ -23,26 +23,47 @@ knitr::kable(nice(a1))
 
 #contrasts
 m3 <- emmeans(a1,c("Group","Spacing"))
+
 #order is by Spacing 
 
-#extra things you don't really need but good to know-----
-#get F ratio and PEsq 
+#extra things you don't really need but adds to the regular contrast table-----
+
 Partial_Eta2 <- function(F, df) {
   t <- sqrt(F)
   pes <- t^2/(t^2 + df)
   return(pes) 
 }
 
+#should get it to extract n from the model instead of hardcoding 16 in this function
+#also this is for repeated measures only
+Bonferronit <- function(T, k, df, alpha=.05) {
+  bonft <- ((T*alpha)/2*k)*(16-1)
+  return(bonft)
+}
+
+
 #write function for output table
 Contrast_Table <- function(out) { 
   out <- as.data.frame(out) %>%
     mutate(F.ratio = t.ratio^2, 
-           # lower.CI = estimate - t.ratio*SE,
-           # upper.CI = estimate + t.ratio*SE,
-           pes = Partial_Eta2(F.ratio, df)
+           pes = Partial_Eta2(F.ratio, df),
+           k = length(out$contrast),
+           bonft = Bonferronit(t.ratio, k, df)
     )
   print(kable(out))
 }
+
+
+Descriptives <- function(.data, .dv, ...) {
+  out <- .data %>%
+    group_by(...) %>%
+    dplyr::summarise(mean = mean({{ .dv }}),
+                     n = n(),
+                     sd = sd({{ .dv }}),
+                     se = sd({{ .dv }})/sqrt(n))
+}
+
+
 
 #contrasts-----
 
@@ -54,6 +75,7 @@ c1 <- list(
 )
 between_out <-contrast(m3,c1)
 Contrast_Table(between_out)
+
 #this doesn't match with PSY but attempts at individual vs simultaneous CI---
 # confint(between_out)
 # confint(as.glht(between_out))
@@ -64,10 +86,8 @@ c2 <- list(
   "20vs60" = c(1,1,1,1,0,0,0,0,-1,-1,-1,-1), #1 0 -1, x 4 groups
   "Quad" = c(1,1,1,1,-2,-2,-2,-2,1,1,1,1) # 1 -2 1, quadratic trend
 )
-within_out <- contrast(m3,c2)
+within_out <- summary(contrast(m3,c2))
 Contrast_Table(within_out)
-
-
 
 man <- manova(cbind(Sepal.Length, Petal.Length) ~ Species, data = dat)
 root_info <- summary(man)
@@ -87,27 +107,39 @@ c3 <-list(
   B2W3 = `1vs2`*Quad,
   B3W3 = `3vs4`*Quad
 )
+
 intx_out <- contrast(m3,c3)
 Contrast_Table(intx_out) # add the F Value and partial eta square
 # produce between x within post-hoc
 
 # compute within x between confidence intervals according to PSY
 
+intx_out <- summary(contrast(m3,c3))
 
+Contrast_Table(intx_out)
+
+
+
+#single factor repeated measures compute CI
+#this generates the closest CIs to PSY but not exact and also annoying to have to compute the mean and sd manually
+library(MBESS)
+
+descrip_main <- Descriptives(data_long, Yield, Group)
+groupedSD_main <- Descriptives(data_long, Yield)
+
+mbessCI <- ci.c(means=c(27.3, 41.4, 30.2, 32.7), s.anova=8.05, c.weights=c(.5, .5, -.5, -.5), 
+     n=c(12, 12, 12, 12), N=48, conf.level=.95)
+
+mbessCI_B2 <- ci.c(means=c(27.3, 41.4, 30.2, 32.7), s.anova=8.05, c.weights=c(1,-1,0,0), 
+                n=c(12, 12, 12, 12), N=48, conf.level=.95)
 
 #output----
 sink("PSY_output.txt")
 print(cat("//Between Subject Contrasts//"))
 print(Contrast_Table(between_out))
-print(confint(between_out))
-confint(as.glht(between_out))
 print(cat("//Within Subjects Contrasts//"))
 print(Contrast_Table(within_out))
-print(confint(within_out))
-confint(as.glht(within_out))
 print(cat("//Interaction Contrasts//"))
 print(Contrast_Table(intx_out))
-print(confint(intx_out))
-confint(as.glht(intx_out))
 sink()
 
