@@ -1,9 +1,10 @@
-# Psy2R  
+# Psy2R 2023
 
-Kelly Garner,  
+
+Kelly Garner, 
+Jessica Lee, 
+Julie Chow 
 Josh Wooley, 
-Kelly Garner,  
-Julie Chow,
 Josh Mosse-Robinson, 
 
 
@@ -21,4 +22,3 @@ Translating the Psy software package to R Code and functions
 <br>
 [Guide to test stats for MANOVA in R](https://rpubs.com/aaronsc32/manova-test-statistics)  
 <br>
-
