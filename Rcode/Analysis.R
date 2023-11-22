@@ -6,7 +6,7 @@ library(afex)
 library(emmeans)
 afex_options(emmeans_model = "multivariate")
 
-data <- read.csv(here("Bird.csv"))
+data <- read.csv(here("BIRD.csv"))
 
 library(tidyverse)
 data_long <- data %>%
@@ -48,15 +48,15 @@ Contrast_Table <- function(out) {
 
 #main effect Group 
 c1 <- list(
-  "12vs34" = c(1,1,-1,-1,1,1,-1,-1,1,1,-1,-1), #Groups 1 1 -1 -1 x 3 within repeats
-  "1vs2" = c(1,-1,0,0,1,-1,0,0,1,-1,0,0), #Groups 1 -1 0 0 x 3 within repeats
-  "3vs4" = c(0,0,1,-1,0,0,1,-1,0,0,1,-1) #groups 0 0 1 -1
+  "12vs34" <- c(1,1,-1,-1,1,1,-1,-1,1,1,-1,-1), #Groups 1 1 -1 -1 x 3 within repeats
+  "1vs2" <- c(1,-1,0,0,1,-1,0,0,1,-1,0,0), #Groups 1 -1 0 0 x 3 within repeats
+  "3vs4" <- c(0,0,1,-1,0,0,1,-1,0,0,1,-1) #groups 0 0 1 -1
 )
 between_out <-contrast(m3,c1)
 Contrast_Table(between_out)
 #this doesn't match with PSY but attempts at individual vs simultaneous CI---
-confint(between_out)
-confint(as.glht(between_out))
+# confint(between_out)
+# confint(as.glht(between_out))
 
 #main effect Spacing
 c2 <- list(
@@ -66,8 +66,14 @@ c2 <- list(
 )
 within_out <- contrast(m3,c2)
 Contrast_Table(within_out)
-confint(within_out)
-confint(as.glht(within_out))
+
+
+
+man <- manova(cbind(Sepal.Length, Petal.Length) ~ Species, data = dat)
+root_info <- summary(man)
+
+#confint(within_out)
+#confint(as.glht(within_out))
 
 #between x within interaction contrasts
 c3 <-list(
@@ -82,9 +88,12 @@ c3 <-list(
   B3W3 = `3vs4`*Quad
 )
 intx_out <- contrast(m3,c3)
-Contrast_Table(intx_out)
-confint(intx_out)
-confint(as.glht(intx_out))
+Contrast_Table(intx_out) # add the F Value and partial eta square
+# produce between x within post-hoc
+
+# compute within x between confidence intervals according to PSY
+
+
 
 #output----
 sink("PSY_output.txt")
