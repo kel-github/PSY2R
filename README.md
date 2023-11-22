@@ -1,7 +1,9 @@
 # Psy2R  
 
-Kelly Garner, 2023 
-Josh Wooley, 2023 
+Kelly Garner,  
+Josh Wooley, 
+Josh Mosse-Robinson,  
+
 <br>
 
 Translating the Psy software package to R Code and functions
