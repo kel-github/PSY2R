@@ -24,12 +24,12 @@ Specify contrasts of interest for which you want to compute confidence intervals
  1.  Indvidual confidence intervals: CI for each contrast in the set.
  2.  Simultaneous confidence intervals (where the magic is)
     a) 
-    b) *Bonferonni t* for between, within and between*within family
-    c)  Post hoc intervals:
-          Between main effects: Scheffe method
-          Within main effects: Hotelling's $T^2$
-          Between/within: Roy's GCR Method
-    d) Balanced 2 factor between subjects: Boik's SMR CIs
+    b) *Bonferonni t* for between, within and between*within family  
+    c)  Post hoc intervals:  
+          Between main effects: Scheffe method  
+          Within main effects: Hotelling's $T^2$  
+          Between/within: Roy's GCR Method  
+    d) Balanced 2 factor between subjects: Boik's SMR CIs  
     e) 
     
 
