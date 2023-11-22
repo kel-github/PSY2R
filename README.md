@@ -1,6 +1,6 @@
-# Psy2R  
+# Psy2R
 
-Kelly Garner, 2023  
+Kelly Garner, Jessica Lee, 2023  
 <br>
 
 Translating the Psy software package to R Code and functions
@@ -15,4 +15,3 @@ Translating the Psy software package to R Code and functions
 <br>
 [Guide to test stats for MANOVA in R](https://rpubs.com/aaronsc32/manova-test-statistics)  
 <br>
-
