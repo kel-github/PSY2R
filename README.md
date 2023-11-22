@@ -1,6 +1,11 @@
 # Psy2R
 
-Kelly Garner, Jessica Lee, 2023  
+
+Kelly Garner, 
+Jessica Lee, 2023  
+Julie Chow
+Josh Mosse-Robinson, 2023 
+
 <br>
 
 Translating the Psy software package to R Code and functions
