@@ -23,7 +23,7 @@ Translating the Psy software package to R Code and functions
 Specify contrasts of interest for which you want to compute confidence intervals
 
  1.  Indvidual confidence intervals: CI for each contrast in the set.
- 2.  Simultaneous confidence intervals (where the magic is)
+ 2.  Simultaneous confidence intervals (where the magic is)  
     a) *Bonferonni t* for between, within and between*within family  
     b)  Post hoc intervals:  
           Between main effects: Scheffe method  
