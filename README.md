@@ -1,8 +1,11 @@
 # Psy2R  
 
-Kelly Garner, 2023  
-Julie Chow
-Josh Mosse-Robinson, 2023 
+Kelly Garner,  
+Josh Wooley, 
+Kelly Garner,  
+Julie Chow,
+Josh Mosse-Robinson, 
+
 
 <br>
 
