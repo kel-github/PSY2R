@@ -1,10 +1,12 @@
-# Psy2R
+# Psy2R 2023
 
 
 Kelly Garner, 
-Jessica Lee, 2023  
-Julie Chow
-Josh Mosse-Robinson, 2023 
+Jessica Lee, 
+Julie Chow 
+Josh Wooley, 
+Josh Mosse-Robinson, 
+
 
 <br>
 
