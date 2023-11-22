@@ -29,8 +29,8 @@ Specify contrasts of interest for which you want to compute confidence intervals
           Within main effects: Hotelling's $T^2$  
           Between/within: Roy's GCR Method  
     c) Balanced 2 factor between subjects: Boik's SMR CIs  
- 3. Scaling
-    a) Mean difference scaling: 
+ 3. Scaling options (go into after replication 1 & 2)  
+
     
 
 
