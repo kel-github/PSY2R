@@ -46,3 +46,5 @@ Specify contrasts of interest for which you want to compute confidence intervals
 <br>
 [Guide to test stats for MANOVA in R](https://rpubs.com/aaronsc32/manova-test-statistics)  
 <br>
+[emmeans source code](https://github.com/rvlenth/emmeans/tree/master/R)
+<br>
