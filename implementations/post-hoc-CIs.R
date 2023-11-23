@@ -1,66 +1,14 @@
-# to-do
-# 1. implement between/w-in CIs
+###############################################################
+# implementation of the post-hoc method
+###############################################################
 rm(list=ls())
 library(tidyverse)
 
-###############################################################
 # functions
-###############################################################
-se_cont <- function(MSE, contrast_vector, n){
-  # compute the standard error of the contrast
-  # --
-  # Kwargs
-  # MSE: mean square error for the effect of interest
-  # contrast_vector: a contrast vector - e.g. one 
-  #  comparing 2 groups would be c(1, -1)
-  # n [f, 1]: df error
-  sqrt(MSE * sum(contrast_vector^2/n))
-}
+source("../functions/general.R")
+source("../functions/simul_post-hoc.R")
 
-contrast_ci <- function(cc, se_contrast){
-  # compute the confidence interval using the
-  # critical constant and the standard error of the
-  # contrast
-  # --
-  # Kwargs
-  # cc [int] - appropriate critical constant
-  # se_contrast 
-  
-  cc * se_contrast
-}
-
-cc_between <- function(v_b, v_e, alpha = 0.05){
-  # compute critical constant for between subject contrasts\
-  # formula (7) from Bird, 2002, https://doi.org/10.1177/0013164402062002001
-  # sqrt(v_b * F_alpha;v_b,v_e)
-  # v_b = df between
-  # v_w = df within
-  # v_e = df error
-  # --
-  # Kwargs
-  # v_b: [f, 1] df between - THIS IS THE DF BTWN FOR THE MODEL
-  # v_e: [f, 1] df error
-  # alpha: [f 1] type 1 error rate
-  
-  # first get critical constant F
-  crit_F <- qf(alpha, v_b, v_e, lower.tail = FALSE)
-  sqrt(v_b * crit_F)
-}
-
-cc_within <- function(v_w, v_e, alpha = .05){
-  # compute critical constant for within subject contrasts\
-  # formula (8) from Bird, 2002, https://doi.org/10.1177/0013164402062002001
-  # sqrt((v_w*v_e)/(v_e-v_w+1) * F_alpha;v_w,v_e-v_w+1)
-  # v_w = df within
-  # v_e = df error
-  # --
-  # Kwargs
-  # v_b: [f, 1] df between - THIS IS THE DF BTWN FOR THE CONTRAST
-  # v_e: [f, 1] df error
-  # alpha: [f 1] type 1 error rate
-  crit_F <- qf(alpha, v_w, v_e-v_w+1, lower.tail = FALSE)
-  sqrt((v_w*v_e)/(v_e-v_w+1) * crit_F)
-}
+# implementations to be tidied up later
 
 ###############################################################
 # read in data and shape
@@ -121,10 +69,8 @@ est_b + ci_b
 contrasts_w <- list(c1 = c(1, -1, 0),
                     c2 = c(1, 0, -1),
                     c3 = c(1, -2, 1))
-# load standard errors computed from compute_win_se.R
-load("win_se.RData")
-se_w <- se
-rm(se)
+# load staard errors computed from compute_win_se.R
+se_w <- get_win_se()
 v_w <- length(contrasts_w$c1) - 1
 cc_w <- cc_within(v_w, v_e)
 
