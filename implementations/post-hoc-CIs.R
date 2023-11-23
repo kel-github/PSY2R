@@ -3,17 +3,23 @@
 ###############################################################
 rm(list=ls())
 library(tidyverse)
+library(tidyverse)
+library(knitr)
+library(AMCP)
+library(MASS)
+library(afex)
 
 # functions
-source("../functions/general.R")
-source("../functions/simul_post-hoc.R")
+source("Documents/GitHub/PSY2R/functions/general.R")
+source("Documents/GitHub/PSY2R/functions/simul_post-hoc.R")
+source("Documents/GitHub/PSY2R/implementations/compute_win_se.R")
 
 # implementations to be tidied up later
 
 ###############################################################
 # read in data and shape
 ###############################################################
-data <- read.csv("BIRD.csv")
+data <- read.csv("Documents/GitHub/PSY2R/resources/BIRD.csv")
 dat <- data
 data <- data %>%
   pivot_longer(
@@ -70,7 +76,10 @@ contrasts_w <- list(c1 = c(1, -1, 0),
                     c2 = c(1, 0, -1),
                     c3 = c(1, -2, 1))
 # load staard errors computed from compute_win_se.R
-se_w <- get_win_se()
+out <- get_win_se()
+
+se_w <- out[[1]]
+est_w <- out[[2]]
 v_w <- length(contrasts_w$c1) - 1
 cc_w <- cc_within(v_w, v_e)
 

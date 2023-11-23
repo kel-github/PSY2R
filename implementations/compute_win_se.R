@@ -13,7 +13,7 @@ get_win_se <- function(){
   select <- dplyr::select
   recode <- dplyr::recode
   
-  data <- read.csv("BIRD.csv")
+  data <- read.csv("Documents/GitHub/PSY2R/resources/BIRD.csv")
   c1 <- c(1, -1, 0)
   c2 <- c(1, 0, -1)
   c3 <- c(1, -2, 1)
@@ -62,6 +62,6 @@ get_win_se <- function(){
   c3se <- sqrt(mse_c3 * sum(c3^2 / n))/2 # to half the contrast values
   se <- c(c1se, c2se, c3se)
   
-  se
+  list(se, est_w) 
 }
 
