@@ -49,9 +49,9 @@ def Davis(p, q, a):
     # Implement Davis function logic here
     pass
 
-def BrentZero(zerofn, lower, upper, arglist, e1, e2):
-    # Implement BrentZero function logic here
-    pass
+# def BrentZero(zerofn, lower, upper, arglist, e1, e2):
+#     # Implement BrentZero function logic here
+#     pass
 
 SMALLEST_EXPONENT = -1.0e+04
 
