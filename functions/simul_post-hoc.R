@@ -65,7 +65,22 @@ cc_btwn_win <- function(v_b, v_w, v_e, alpha = 1 - 0.05){
   # mu = 2 log tan ((phi + gamma)/2)  eq (9)
   # sigma_3 = 16/(N^2) * 1/(sin^2(phi + gamma) sin(phi) sin(gamma))
   #
+  # sin(gamma/2)^2 = (s - 1/2)/N
+  # so gamma = 2 * sin^-1 sqrt((s - 1/2)/N)
+  #
+  # sin(phi/2)^2 (s + 2n + 1/2)/N
+  # so phi = 2 * sin^-1 sqrt((s + 2n + 1/2)/N)
+  #
   # first use rmstat package to get f_alpha
   f_alpha <- RMTstat::qtw(alpha)
+  
+  # compute s, m & n
+  s = min(v_b, v_w)
+  m = (abs(v_b - v_w) - 1.0)/2.0
+  n = (abs(v_e - v_w - 1.0)/2.0)
+  N = 2.0*(s+m+n) + 1.0
+  # now compute gamma and phi
+  gamma = 2.0 * asin( sqrt( (s - 0.5) / N )  )
+  phi = 2.0 * asin( sqrt( (s + 2.0*n + 0.5) / N  ))   
   
 }
