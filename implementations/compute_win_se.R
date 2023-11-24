@@ -71,6 +71,7 @@
   #w1con <- c(1, -1, 0)[cs_w]
   #w1b2 <- g1_v_g2*w1con
   #se_w1b2 <- sqrt(mse_c1*sum(w1b2^2/n))
+  ####
   
   list(se, est_w) 
 #}
