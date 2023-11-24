@@ -41,7 +41,7 @@ get_win_se <- function(){
   a = mean(as.matrix(data[,-c(1,2)]) %*% c1)
   b = mean(as.matrix(data[,-c(1,2)]) %*% c2)
   c = mean(as.matrix(data[,-c(1,2)]) %*% c3)
-  est <- c(a, b, c)
+  est <- c(a, b, c/2)
   est_w <- est
   
   n <- nrow(data)
