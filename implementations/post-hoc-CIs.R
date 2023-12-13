@@ -10,16 +10,16 @@ library(MASS)
 library(afex)
 
 # functions (dirs can change)
-source("Documents/GitHub/PSY2R/functions/general.R")
-source("Documents/GitHub/PSY2R/functions/simul_post-hoc.R")
-source("Documents/GitHub/PSY2R/implementations/compute_win_se.R")
+source("../functions/general.R")
+source("../functions/simul_post-hoc.R")
+source("../implementations/compute_win_se.R")
 
 # implementations to be tidied up later
 
 ###############################################################
 # read in data and shape
 ###############################################################
-data <- read.csv("Documents/GitHub/PSY2R/resources/BIRD.csv")
+data <- read.csv("../resources/BIRD.csv")
 dat <- data
 data <- data %>%
   pivot_longer(

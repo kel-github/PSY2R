@@ -13,7 +13,7 @@ get_win_se <- function(){
   select <- dplyr::select
   recode <- dplyr::recode
   
-  data <- read.csv("Documents/GitHub/PSY2R/resources/BIRD.csv")
+  data <- read.csv("../resources/BIRD.csv")
   c1 <- c(1, -1, 0)
   c2 <- c(1, 0, -1)
   c3 <- c(1, -2, 1)
