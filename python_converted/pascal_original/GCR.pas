@@ -45,6 +45,7 @@ end;
 function Ksmn(s, m, n: float): float; {
 ------------- constant factor in largest root cdf [Roy 7.8.1] }
 {PSY2R - not identical to anderson p. 537 equation...?}
+{KG: }
 var   i, si: integer;
       term: array[0..5] of float;
 
