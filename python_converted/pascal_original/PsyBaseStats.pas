@@ -455,19 +455,24 @@ end; { LnBeta }
 function BetaZero(x, m, n: float): float; {
 -------------------- B0 as per Roy p.202 }
 begin
-   BetaZero := exp(m*ln(x) + n*ln(1.0 - x));
+   BetaZero := exp(m*ln(x) + n*ln(1.0 - x)); {PSY2R: m -> m+s-1, n -> n+1; see Pillai, 1965, this corresponds to the I_0 function in eq 5}}
 end; { BetaZero }
 
 function IncBetaContFrac(x, p, q: float; fn: integer): float;
-{PSY2R: Function is embedded, converted to python for easier reading} {
+{PSY2R: Function is embedded} {
 ------------------------ Tretter & Walster cf as per Boik & Robinson-Cox
                          fn = 1 return Ix(a,b): incomplete beta function ratio
                          fn = 2 return incomplete beta(a,b) }
+                         {PSY2R: compute either the incomplete beta function, or the incomplete beta ratio over the provided intervals. NOTE: ARE THESE FUNCTIONS PROVIDED IN R?
+                         Further mysteries - when does anfn and bnfn get called? the use of this function appears to be guided by a conditional statement that occurs just before the next function that does the incomplete beta distribution in parts}
+{PSY2R: BetaRoy(x,2*m+1,2*n+1), so for s = 2, x is x, p =2*m+1, q=2*n+1 - see what is entered into the incomplete beta function
+in eq 6, of Pillai 1965 }
+
 const napproxmax = 128;
 type  valuelist = (minimum, previous, current);
 var   n: integer;
       A, B: array[-1..1] of float;
-      an, bn, f, cf, Kxpq, tmp: float;
+      an, bn, f, cf, Kxpq, tmp: float; {PSY2R: these terms are found in eq 2 of Boik & RC, apart from cf}
       convergence: array[0..2] of float;
       converged, switch: boolean;
       value: array[minimum..current] of float;
@@ -478,18 +483,18 @@ var   term: array[1..2] of float;
 begin
    if n == 1 then
       begin
-      term1 := p*f * (q - 1);
+      term1 := p*f * (q - 1); {PSY2R: top term of eq 2 from B&R-C, where n = 1}
       term2 := q * (p + 1);
       end
    else
       begin
-      term1 := (p*p) * (f*f) * (n-1) * (p+q+n-2) * (p+n-1) * (q-n);
+      term1 := (p*p) * (f*f) * (n-1) * (p+q+n-2) * (p+n-1) * (q-n); {PSY2R: bottom term, were n>=2}
       term2 := (q*q) * (p+2*n-3) * (p+2*n-2) * (p+2*n-2) * (p+2*n-1);
       end;
    anfn := term[1]/term[2];
 end; { anfn }
 
-function bnfn(n: integer; p, q, f: float): float; {
+function bnfn(n: integer; p, q, f: float): float; { PSY2R: get bn from eq 2, B&R-C
 ------------- }
 var   term: array[1..2] of float;
 begin
@@ -500,69 +505,68 @@ end; { bnfn }
 
 
 begin
-   if (x > p/(p + q)) then
+   if (x > p/(p + q)) then {PSY2R: if x is greater than 2*m+1 / (2*m+1 + 2*n+1), where m = (abs(df_b - df_w) - 1)  / 2 and n = (df_e - df_w - 1)/2 NOTE: work through code and decipher what x is}
       begin switch := true;
-      x := 1.0 - x;  tmp := p;  p := q;  q := tmp;
+      x := 1.0 - x;  tmp := p;  p := q;  q := tmp; {PSY2R: if x > p/(p+q) then approximate 1-x q/(p+q) Boik & Robinson-Cox}
       end
    else switch := false;
 
-   f := (q * x)/(p * (1 - x));
-   value[minimum] := 1.0e-12;  value[previous] := 1.0;
-   A[-1] := 1;  A[0] := 1;
+   f := (q * x)/(p * (1 - x)); {PSY2R: eq 2 B&R-C}
+   value[minimum] := 1.0e-12;  value[previous] := 1.0; {PSY2R: set acceptable covergence error to real small (basically 0), and the value labelled as previous to 1}
+   A[-1] := 1;  A[0] := 1; {Psy2R: these are A-1 and A0 from the  named terms from the defintion of An and Bn, i.e. A-2 and A-1 when n=1}
    B[-1] := 0;  B[0] := 1;
-   converged := false;  n := 0;
+   converged := false;  n := 0; 
    while not converged do
-      begin n := n + 1;
-      an := anfn(n,p,q,f);
-      bn := bnfn(n,p,q,f);
-      A[1] := an * A[-1] + bn * A[0];
-      B[1] := an * B[-1] + bn * B[0];
-      if B[1] > A[1] then
+      begin n := n + 1; {PSY2R: step forward 1}
+      an := anfn(n,p,q,f); {PSY2R: get the terms from eq 2, which give the terms used for the recursive sum set out in matrix 2, which is the hypergeomtric series which approximates integration for the Beta function}
+      bn := bnfn(n,p,q,f); {PSY2R: as above}
+      A[1] := an * A[-1] + bn * A[0]; {PSY2R: get An as per the definitions just under eq 3}
+      B[1] := an * B[-1] + bn * B[0]; {PSY2R: as above, but for B}
+      if B[1] > A[1] then {PSY2R: Not sure about why this, have not hunted it down as yet}
          begin
-         A[0] := A[0]/B[1];  A[1] := A[1]/B[1];
-         B[0] := B[0]/B[1];  B[1] := 1.0
+         A[0] := A[0]/B[1];  A[1] := A[1]/B[1]; 
+         B[0] := B[0]/B[1];  B[1] := 1.0 
          end
       else
          begin
          B[0] := B[0]/A[1];  B[1] := B[1]/A[1];
          A[0] := A[0]/A[1];  A[1] := 1.0
-         end;
+      end;
 
-      A[-1] := A[0];  A[0] := A[1];
+      A[-1] := A[0];  A[0] := A[1]; {PSY2R: update A[-1] and A[0] to be the previous values of A0 and A1, i.e. move one along}
       B[-1] := B[0];  B[0] := B[1];
 
-      value[current] := A[1]/B[1];
+      value[current] := A[1]/B[1]; {PSY2R: this gives the An/Bn term of the nth approximant in Boik & Robinson-Cox eq 3}
       converged := abs(value[previous] - value[current]) < value[minimum];
       value[previous] := value[current]
 
-      end;
+     end; {PSY2R: end nth order approximation}
 
-   cf := Ln(A[1]) - Ln(B[1]);
+   cf := Ln(A[1]) - Ln(B[1]); {PSY2R: continued fraction? https://en.wikipedia.org/wiki/Continued_fraction}
 
-   if fn = 1 then { incomplete beta function ratio }
+   if fn = 1 then { incomplete beta function ratio } 
       begin
-      Kxpq := p*Ln(x) + (q-1)*Ln(1.0-x) - Ln(p) - LnBeta(p,q);
+      Kxpq := p*Ln(x) + (q-1)*Ln(1.0-x) - Ln(p) - LnBeta(p,q); {PSY2R: this is the definition of K in eq 1 of Boik & Robinson Cox}
       if switch then
          IncBetaContFrac := 1.0 - exp(Kxpq + cf)
       else
          IncBetaContFrac := exp(Kxpq + cf)
       end
-   else { incomplete beta function }
-      if switch then
+   else { incomplete beta function } {- PSY2R: BetaRoy calls function 2 - aka this one }
+      if switch then {PSY2R: if 1-x, q, p, is being approximated, then...}
          begin
          Kxpq := p*Ln(x) + (q-1)*Ln(1.0-x) - Ln(p);
-         IncBetaContFrac := exp(LnBeta(p,q)) - exp(Kxpq + cf)
+         IncBetaContFrac := exp(LnBeta(p,q)) - exp(Kxpq + cf) {PSY2R: then take the difference between the full Beta distribution and the area defined by the approximation}
          end
       else
          begin
          Kxpq := p*Ln(x) + (q-1)*Ln(1.0-x) - Ln(p);
-         IncBetaContFrac := exp(Kxpq + cf)
+         IncBetaContFrac := exp(Kxpq + cf) {PSY2R: evaluate I, given s, eq 2 of Boik & Robinson-Cox}
          end
 end;
 
 function IncompleteBetaByPartsNLarge(r, m, n: float): float; {
 ------------------------------ In some regions do parts }
-
 var   I, lhs, rhs, mult, upperlimit, lowerlimit: float;
 
 begin
@@ -617,13 +621,7 @@ begin
    m := m + 1;  n := n + 1;
    if n <= 600 then
       begin
-      BetaRoy := IncBetaContFrac(x,m,n,2)
-      end
-   else
-      begin
-      BetaRoy := IncompleteBetaByPartsNLarge(x,m-1,n-1)
-      end
-end; { Beta }
+      BetaRoy := IncBetaContFrac(x,m,n,2) {PSY2R: always returns the incomplete beta ratio (arg fn = 2)
 
 function IncompleteBetaFunctionRatio(p, q, x: float): float; {
 ------------------------------------ This just calls other routines to do the

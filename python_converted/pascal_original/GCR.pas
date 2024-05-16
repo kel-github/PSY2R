@@ -44,25 +44,24 @@ end;
       
 function Ksmn(s, m, n: float): float; {
 ------------- constant factor in largest root cdf [Roy 7.8.1] }
-{PSY2R - not identical to anderson p. 537 equation...?}
-{KG: }
+
 var   i, si: integer;
       term: array[0..5] of float;
 
 begin
-     term[0] := (s/2)*ln(Pi);
+     term[0] := (s/2)*ln(Pi); {Psy2R: first term of numerator of eq 2, Pillai 1965}
 
      si := round(s);
      term[1] := 0.0;
      for i := 1 to si do
         begin
-        term[1] := term[1] + LnGamma((2*m + 2*n + s + i + 2)/2);
+        term[1] := term[1] + LnGamma((2*m + 2*n + s + i + 2)/2); {Psy2R: second term of numerator of eq 2 of Pillai, 1965}
         end;
 
      term[2] := 0.0;
      for i := 1 to si do
         begin
-        term[2] := term[2] + LnGamma((2*m + i + 1)/2);
+        term[2] := term[2] + LnGamma((2*m + i + 1)/2); {Psy2R: 1st denom Pillai, 1965, and so on}
         end;
 
      term[3] := 0.0;
@@ -85,32 +84,33 @@ end;
 function RoyExact(s,m,n,x: float): float; {
 ----------------- Exact expressions as per Roy/Pillai/Nanda }
 
-var B, B0, work: array[1..10] of float;
-    K: array[2..10] of float;
+var B, B0, work: array[1..10] of float; {Psy2R: create 3 arrays of 10 elements, each with indices [1,..,10]}
+    K: array[2..10] of float; {Psy2R: can be interpreted as above}
     Pr: array[2..6] of float;
     ns: integer;
 
 begin
-    for ns := 2 to trunc(s) do
+    for ns := 2 to trunc(s) do {Psy2R: make s an integer}
       case ns of
       2: begin
-         K[2]  := Ksmn(2,m,n); 
-         B[1]  := BetaRoy(x,2*m+1,2*n+1);
-         B0[1] := BetaZero(x,m+1,n+1);
-         B[2]  := BetaRoy(x,m,n);
-         Pr[2] := K[2]/(m + n + 2) * (2*B[1] - B0[1]*B[2]);
+         K[2]  := Ksmn(2,m,n); {Psy2R: get the constant from Pillai 1965 eq 2}
+         B[1]  := BetaRoy(x,2*m+1,2*n+1); {PSY2R: evaluate incomplete beta function for x, given m & n & s}
+         B0[1] := BetaZero(x,m+1,n+1); {PSY2R: the probability of x, given m & n, see in eq 6, of Pillai 1965}
+         B[2]  := BetaRoy(x,m,n); 
+         Pr[2] := K[2]/(m + n + 2) * (2*B[1] - B0[1]*B[2]); {PSY2R: see eq 2.3.2 from Pillai 1954) 
+         becomes I(x; m, n) I am yet to work out}
          end;
       3: begin
          K[3]  := Ksmn(3,m,n);
-         B0[2] := BetaZero(x,m+2,n+1);
-         B[3]  := BetaRoy(x,2*m+3,2*n+1);
-         B[4]  := BetaRoy(x,2*m+2,2*n+1);
-         B[5]  := BetaRoy(x,m+1,n);
-         work[1] := 2*B[3]*B[2] - 2*B[4]*B[5] - B0[2]*Pr[2]/K[2];
-         Pr[3] := K[3]/(m + n + 3) * work[1];
+         B0[2] := BetaZero(x,m+2,n+1); {PSY2R: I0}
+         B[3]  := BetaRoy(x,2*m+3,2*n+1); {PSY2R: 4th}
+         B[4]  := BetaRoy(x,2*m+2,2*n+1); {PSY2R: 6th}
+         B[5]  := BetaRoy(x,m+1,n); {PSY2R: 5th}
+         work[1] := 2*B[3]*B[2] - 2*B[4]*B[5] - B0[2]*Pr[2]/K[2]; {PSY2R: Pr[2] is the probability that theta2 <= x, which is defined in eq 2.3.3 as I(m+1, m, n), and does B[2] come from the previous s? }
+         Pr[3] := K[3]/(m + n + 3) * work[1]; {PSY2R: eq 2.3.3 from Pillai, 1954}
          end;
       4: begin
-         K[4]  := Ksmn(4,m,n);
+         K[4]  := Ksmn(4,m,n); {PSY2R: and so on...}
          B0[3] := BetaZero(x,m+3,n+1);
          B[6]  := BetaRoy(x,2*m+5,2*n+1);
          B[7]  := BetaRoy(x,2*m+4,2*n+1);
@@ -133,6 +133,7 @@ end; { RoyExact }
 
 function PillaiApproxOriginal(s, m, n, x: float): float; {
 ---------Approximate method of Pillai as per Pillai & Flury 1984 2.3}
+{PSY2R: this function is used if s <= 20}
 
 const smax = 20;
 type sarray = array[1..smax] of float;
