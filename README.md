@@ -1,23 +1,16 @@
-# Psy2R 2023
-
-Kelly Garner, 
-
-Jessica Lee, 
-
-Julie Chow, 
-
-Josh Wooley, 
-
-Josh Mosse-Robinson, 
-
-Lydia Barnes,  
-
-Kateryna Marchenko,  
-
-Ambica Golyala,  
-
+# Psy2R - unleashing  post-hoc contrast confidence intervals into the wild    
 
 <br>
+
+**A list of contributors so far**
+
+Kelly Garner, Jessica Lee, Julie Chow, Josh Wooley, Josh Mosse-Robinson, Lydia Barnes,  Kateryna Marchenko,  Ambica Golyala, Sonny Li, Kevin Bird  
+
+<br>
+
+## About
+
+To move beyond binary decision-making in the interpretation of the outcomes from statistical models, we need to estimate and communicate the size of our estimated effects, and our uncertainty in the estimated effect size. This requires that we report both estimated effect sizes and the confidence intervals around those effects. Psy is a windows-based software that enables computation of 
 
 Translating the Psy software package to R Code and functions
 
