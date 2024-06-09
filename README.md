@@ -1,4 +1,4 @@
-# Psy2R - unleashing  post-hoc contrast confidence intervals into the wild    
+# Psy2R - unleashing post-hoc contrast confidence intervals into reproducible workflows   
 
 <br>
 
