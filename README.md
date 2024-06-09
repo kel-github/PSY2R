@@ -18,6 +18,7 @@ It is possible to avoid these dragons by using an alternative procedure where al
 
 One piece of software (PSY) can produce SCIs appropriate for both planned analyses (where contrasts are defined independently of the data) and for more flexible analyses where contrasts are defined on a post-hoc basis. However, this software is only available for use on windows and cannot be scripted into reproducible workflows. Our goal is to build an R package that implements the functions of PSY, and to make this method of statistical inference available to the masses!
 
+<br>
 
 ## Getting started
 
@@ -33,7 +34,26 @@ Our Zotero library is [here](https://www.zotero.org/groups/5561818/psy2r). The p
 
 ### Download and use Psy on your machine
 
-Download the Psy software from [here](https://www.unsw.edu.au/science/our-schools/psychology/our-research/research-tools/psy-statistical-program). If you don't have a Windows machine (which is a requirement of Psy), you can install [WINE](https://www.winehq.org/), which allows you to run Windows applications on your Linux or macOS.
+Download the Psy software from [here](https://www.unsw.edu.au/science/our-schools/psychology/our-research/research-tools/psy-statistical-program). If you don't have a Windows machine (which is a requirement of Psy), you can install [WINE](https://www.winehq.org/), which allows you to run Windows applications on your Linux or macOS. See [here](https://wiki.winehq.org/Wine_User%27s_Guide) for a user's guide on how to use WINE. The **Quick Start** section is particularly helpful.  
+
+Once you have wine installed, you can perform a simple data analysis that will be our testing dataset/analysis, when comparing outputs between Psy and our R implementation.  
+
+A good exercise is to load the 'BIRD.csv' data file from the [resources](https://github.com/kel-github/PSY2R/tree/main/resources) folder of this repository, and then compute the following contrasts:  
+
+**Between Group**  
+Groups 1 and 2 vs groups 3 and 4  
+Group 1 vs  2  
+Group 3 vs 4  
+
+**Repeated-measures**
+Spacing 20 vs 40  
+Spacing 20 vs 60  
+Quadratic trend  
+
+You can check your output to those stored in the resources folder :)  
+
+
+
 
 
 
