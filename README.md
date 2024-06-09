@@ -52,7 +52,9 @@ Quadratic trend
 
 You can check your output to those stored in the resources folder :)  
 
+## Have done the above and ready to go?
 
+Jump on the [project board](https://github.com/users/kel-github/projects/4) and find some tasks!
 
 
 
