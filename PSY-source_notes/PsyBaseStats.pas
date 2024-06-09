@@ -464,7 +464,6 @@ function IncBetaContFrac(x, p, q: float; fn: integer): float;
                          fn = 1 return Ix(a,b): incomplete beta function ratio
                          fn = 2 return incomplete beta(a,b) }
                          {PSY2R: compute either the incomplete beta function, or the incomplete beta ratio over the provided intervals. NOTE: ARE THESE FUNCTIONS PROVIDED IN R?
-                         Further mysteries - when does anfn and bnfn get called? the use of this function appears to be guided by a conditional statement that occurs just before the next function that does the incomplete beta distribution in parts}
 {PSY2R: BetaRoy(x,2*m+1,2*n+1), so for s = 2, x is x, p =2*m+1, q=2*n+1 - see what is entered into the incomplete beta function
 in eq 6, of Pillai 1965 }
 
@@ -472,7 +471,7 @@ const napproxmax = 128;
 type  valuelist = (minimum, previous, current);
 var   n: integer;
       A, B: array[-1..1] of float;
-      an, bn, f, cf, Kxpq, tmp: float; {PSY2R: these terms are found in eq 2 of Boik & RC, apart from cf}
+      an, bn, f, cf, Kxpq, tmp: float; {PSY2R: these terms are found in eq 2 of Boik & RC}
       convergence: array[0..2] of float;
       converged, switch: boolean;
       value: array[minimum..current] of float;

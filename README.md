@@ -30,7 +30,7 @@ We'll use a 'fork and pull request' workflow for code contributions. The first s
 
 ### Getting familiar with Psy
 
-Our Zotero library is [here](https://www.zotero.org/groups/5561818/psy2r). The papers you need to understand the logic of simultaneous confidence intervals and what the Psy software does are in the folder 'logic-of-simultaenous-procedures-and-psy'. Bird & Hadzi-Pavlovic (1983) provides the logic, and Bird (2002) provides the formulae used by Psy to compute confidence intervals.
+Our Zotero library is [here](https://www.zotero.org/groups/5561818/psy2r/library). The papers you need to understand the logic of simultaneous confidence intervals and what the Psy software does are in the folder 'logic-of-simultaenous-procedures-and-psy'. Bird & Hadzi-Pavlovic (1983) provides the logic, and Bird (2002) provides the formulae used by Psy to compute confidence intervals.
 
 ### Download and use Psy on your machine
 

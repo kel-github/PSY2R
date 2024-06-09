@@ -106,7 +106,7 @@ begin
          B[3]  := BetaRoy(x,2*m+3,2*n+1); {PSY2R: 4th}
          B[4]  := BetaRoy(x,2*m+2,2*n+1); {PSY2R: 6th}
          B[5]  := BetaRoy(x,m+1,n); {PSY2R: 5th}
-         work[1] := 2*B[3]*B[2] - 2*B[4]*B[5] - B0[2]*Pr[2]/K[2]; {PSY2R: Pr[2] is the probability that theta2 <= x, which is defined in eq 2.3.3 as I(m+1, m, n), and does B[2] come from the previous s? }
+         work[1] := 2*B[3]*B[2] - 2*B[4]*B[5] - B0[2]*Pr[2]/K[2]; {PSY2R: Pr[2] is the probability that theta2 <= x, which is defined in eq 2.3.3 as I(m+1, m, n), B[2] comes from the previous s. }
          Pr[3] := K[3]/(m + n + 3) * work[1]; {PSY2R: eq 2.3.3 from Pillai, 1954}
          end;
       4: begin
