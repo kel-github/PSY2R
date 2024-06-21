@@ -5,8 +5,8 @@
 **A list of contributors so far**
 
 Kelly Garner  
-Jonathan Rittmo  
 Christopher Nolan  
+Jonathan Rittmo  
 Jessica Lee  
 Julie Chow  
 Josh Wooley  
