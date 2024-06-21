@@ -4,7 +4,7 @@
 
 **A list of contributors so far**
 
-Kelly Garner, Jessica Lee, Julie Chow, Josh Wooley, Josh Mosse-Robinson, Lydia Barnes,  Kateryna Marchenko,  Ambica Golyala, Sonny Li, Kevin Bird  
+Kelly Garner, Jonathan Rittmo, Jessica Lee, Julie Chow, Josh Wooley, Josh Mosse-Robinson, Lydia Barnes,  Kateryna Marchenko,  Ambica Golyala, Sonny Li, Kevin Bird  
 
 <br>
 
