@@ -1,12 +1,17 @@
 #title: Bird data
 
 #summation Tests----
+
+install.packages("here")
+install.packages("afex")
+install.packages("emmeans")
 library(here)
 library(afex)
 library(emmeans)
+
 afex_options(emmeans_model = "multivariate")
 
-data <- read.csv(here("BIRD.csv"))
+data <- read.csv(here("/Users/roggeokk/Documents/GitHub/PSY2R/resources/BIRD.csv"))
 
 library(tidyverse)
 data_long <- data %>%
@@ -17,7 +22,11 @@ data_long <- data %>%
   dplyr::select(subj,Group,Spacing,Yield)
 
 a1<- aov_ez("subj","Yield",data_long, within = "Spacing",between = "Group")
-a1
+class(a1)
+
+library(chk)
+object <-chklist(a1)
+object = .chk.list(object, ...)
 library(knitr)
 knitr::kable(nice(a1))
 
