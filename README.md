@@ -7,6 +7,7 @@
 Kelly Garner  
 Christopher Nolan  
 Jonathan Rittmo  
+Kimberly Rogge-Obando  
 Jessica Lee  
 Julie Chow  
 Josh Wooley  
