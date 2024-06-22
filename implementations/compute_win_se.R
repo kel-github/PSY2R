@@ -1,7 +1,7 @@
 # code to manually compute contrasts and compute se on the contrast
 # adapted from https://nmmichalak.github.io/nicholas_michalak/blog_entries/2018/nrg07/nrg07.html
 
-#get_win_se <- function(){
+get_win_se <- function(){
   
   library(tidyverse)
   library(knitr)
@@ -62,16 +62,7 @@
   c2se <- sqrt(mse_c2 * sum(c2^2 / n))
   c3se <- sqrt(mse_c3 * sum(c3^2 / n))/2 # to half the contrast values
   se <- c(c1se, c2se, c3se)
-  
 
-#attempt at calculating interaction contrasts NOT MATCHING PSY OUTPUT  
-  #cs_b <- gl(4, 3, labels = c("1","2","3","4"))
-  #g1_v_g2 <- c(1,-1,0,0)[cs_b]
-  #cs_w <- gl(3, 4,labels = c("1","2","3"))
-  #w1con <- c(1, -1, 0)[cs_w]
-  #w1b2 <- g1_v_g2*w1con
-  #se_w1b2 <- sqrt(mse_c1*sum(w1b2^2/n))
-  ####
   
   list(se, est_w) 
-#}
+}

@@ -6,7 +6,7 @@ library(afex)
 library(emmeans)
 afex_options(emmeans_model = "multivariate")
 
-data <- read.csv(here("BIRD.csv"))
+data <- read.csv("../resources/BIRD.csv")
 
 library(tidyverse)
 data_long <- data %>%
@@ -43,11 +43,11 @@ Bonferronit <- function(T, k, df, alpha=.05) {
 
 
 #write function for output table
-Contrast_Table <- function(out) { 
+Contrast_Table <- function(out, k) { 
   out <- as.data.frame(out) %>%
     mutate(F.ratio = t.ratio^2, 
            pes = Partial_Eta2(F.ratio, df),
-           k = length(out$contrast),
+           k = k,
            bonft = Bonferronit(t.ratio, k, df)
     )
   print(kable(out))
@@ -74,7 +74,7 @@ c1 <- list(
   "3vs4" <- c(0,0,1,-1,0,0,1,-1,0,0,1,-1) #groups 0 0 1 -1
 )
 between_out <-contrast(m3,c1)
-Contrast_Table(between_out)
+Contrast_Table(between_out, 3)
 
 #this doesn't match with PSY but attempts at individual vs simultaneous CI---
 # confint(between_out)
@@ -87,10 +87,7 @@ c2 <- list(
   "Quad" = c(1,1,1,1,-2,-2,-2,-2,1,1,1,1) # 1 -2 1, quadratic trend
 )
 within_out <- summary(contrast(m3,c2))
-Contrast_Table(within_out)
-
-man <- manova(cbind(Sepal.Length, Petal.Length) ~ Species, data = dat)
-root_info <- summary(man)
+Contrast_Table(within_out,3)
 
 #confint(within_out)
 #confint(as.glht(within_out))
@@ -107,9 +104,12 @@ c3 <-list(
   B2W3 = `1vs2`*Quad,
   B3W3 = `3vs4`*Quad
 )
+c3 <-list(
+  B1W1 = "12vs34"*"20vs40"
+)
 
 intx_out <- contrast(m3,c3)
-Contrast_Table(intx_out) # add the F Value and partial eta square
+Contrast_Table(intx_out, 9) # add the F Value and partial eta square
 # produce between x within post-hoc
 
 # compute within x between confidence intervals according to PSY

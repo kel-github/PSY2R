@@ -76,7 +76,7 @@ contrasts_w <- list(c1 = c(1, -1, 0),
                     c2 = c(1, 0, -1),
                     c3 = c(1, -2, 1))
 # load staard errors computed from compute_win_se.R
-out <- get_win_se()
+out <- get_win_se() # this is ugly and hard coded and in desperate need of attention
 
 se_w <- out[[1]]
 est_w <- out[[2]]
@@ -93,3 +93,56 @@ est_w + do.call(cbind, ci_w)
 ###############################################################
 # between x within subject confidence intervals
 ###############################################################
+# get data in the right form for manova
+# define s, m, & n for the between x within family
+# s = min(νB, νW) min(dfB, dfW)
+# m =(|νB – νW| – 1)/2 
+# n =(νE – νW – 1)/2) (dfE)
+
+
+# now get the MSE for the contrast and multiply by the gcr value
+source("../functions/gcr_crit.R")
+#attempt at calculating interaction contrasts NOT MATCHING PSY OUTPUT  
+cs_b <- gl(4, 3, labels = c("1","2","3","4"))
+g1_v_g2 <- c(1,-1,0,0)[cs_b]
+cs_w <- gl(3, 4,labels = c("1","2","3"))
+w1con <- c(1, -1, 0)[cs_w]
+w1b2 <- g1_v_g2*w1con
+# first of all get the contrast estimate
+
+a = mean(as.matrix(data[,-c(1,2)]) %*% w1b2)
+
+# νB and νW are degrees of freedom parameters referring to the between-subjects 
+# and the within-subjects component of an effect, respectively. The number of 
+# degrees of freedom for error (νE)isN – J, where N is the total sample size 
+# and J is the number of groups. For example, a 3 × 4 × (2 × 5) experiment 
+# with N = 96 subjects has 3 × 4 = 12 groups, 2 × 5 = 10 observations per subject, 
+# and νE = 96 – 12 = 84 degrees of freedom for error.
+
+# Psy definitions
+nsubs = 16
+ngroups = 4
+nwithin = 5
+DFE = nsubs - ngroups
+s = min(ngroups-1, nwithin-1)
+m =  (abs(ngroups - nwithin) -1)/2
+n = (DFE - nwithin)/2
+
+vB = 2 # 3
+vW = 3 # 2
+vE = 12 
+s = 2
+m = (abs(vB+1-vW+1) - 1)/2 # in pascal, set to 0 if -ve
+n = (16 - vW)/2
+
+macheps = 2.0e-14
+tol     = 1.0e-10
+b =  0.999
+tol <- 2 * macheps * abs(b) + tol
+
+MSE = tmp['c1:subj', 'Mean Sq']
+se_c1b1 = se_cont(MSE, w1b2, 12)
+theta = gcr_crit(.05, s, m, n)
+
+cc = sqrt((vE*theta)/(1-theta))
+contrast_ci(se_c1b1, cc)
