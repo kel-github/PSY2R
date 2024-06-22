@@ -8,6 +8,7 @@ interface
 
 Ksmn - eq 7.8.1 - some aspects of multivariate analysis Roy 1957
 RoyExact function (=theta) calls Ksmn, BetaRoy (which equals IncBetaContFrac or IncompleteBetaByPartsNLarge depending on what values of m and n) and BetaZero
+NOTE: KG can't find example in the code where IncompleteBetaByPartsNLarge is used, seems to be there to be called in the case that n > 600, but I think that step may never have been implemented
 }
 
 

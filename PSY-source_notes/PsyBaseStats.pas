@@ -443,8 +443,6 @@ end; { BrentZero }
 
 
 
-
-
 function LnBeta(a, b: float): float; {
 --------------- log of the complete Beta function }
 begin
@@ -461,8 +459,8 @@ end; { BetaZero }
 function IncBetaContFrac(x, p, q: float; fn: integer): float;
 {PSY2R: Function is embedded} {
 ------------------------ Tretter & Walster cf as per Boik & Robinson-Cox
-                         fn = 1 return Ix(a,b): incomplete beta function ratio
-                         fn = 2 return incomplete beta(a,b) }
+                         fn = 1 return Ix(a,b): incomplete beta function ratio - IBeta - see github issue
+                         fn = 2 return incomplete beta(a,b) - RBeta - see github issue}
                          {PSY2R: compute either the incomplete beta function, or the incomplete beta ratio over the provided intervals. NOTE: ARE THESE FUNCTIONS PROVIDED IN R?
 {PSY2R: BetaRoy(x,2*m+1,2*n+1), so for s = 2, x is x, p =2*m+1, q=2*n+1 - see what is entered into the incomplete beta function
 in eq 6, of Pillai 1965 }
@@ -476,7 +474,7 @@ var   n: integer;
       converged, switch: boolean;
       value: array[minimum..current] of float;
 
-function anfn(n: integer; p, q, f: float): float; {
+function anfn(n: integer; p, q, f: float): float; {an as a function of n
 ------------- }
 var   term: array[1..2] of float;
 begin
@@ -541,7 +539,7 @@ begin
 
      end; {PSY2R: end nth order approximation}
 
-   cf := Ln(A[1]) - Ln(B[1]); {PSY2R: continued fraction? https://en.wikipedia.org/wiki/Continued_fraction}
+   cf := Ln(A[1]) - Ln(B[1]); {PSY2R: continued fraction - the series part of eq 2}
 
    if fn = 1 then { incomplete beta function ratio } 
       begin
@@ -620,8 +618,9 @@ begin
    m := m + 1;  n := n + 1;
    if n <= 600 then
       begin
-      BetaRoy := IncBetaContFrac(x,m,n,2) {PSY2R: always returns the incomplete beta ratio (arg fn = 2)
+      BetaRoy := IncBetaContFrac(x,m,n,2) {PSY2R: always returns the incomplete beta ratio (arg fn = 2)}
 
+{PSY2R: this is covered by RBeta - see github issue - KG: 2024}
 function IncompleteBetaFunctionRatio(p, q, x: float): float; {
 ------------------------------------ This just calls other routines to do the
          required calculations so that how it is done is transparent }
