@@ -3,6 +3,10 @@
 ### and the loose implementation of Psy that we have so far in R.
 rm(list=ls())
 
+##### things to know up front
+## can everything we rely on internally use the explicit defining of factor levels 
+# from a dataframe
+
 ##### install packages
 library(tidyverse)
 library(emmeans)
@@ -10,6 +14,7 @@ library(afex)
 # helpful places to look for code generality
 # https://github.com/singmann/afex
 # https://cran.r-project.org/web/packages/emmeans/index.html
+source("../functions/gcr_crit.R")
 
 ### Target values:
 # Raw CIs (scaled in Dependent Variable units)
@@ -44,7 +49,7 @@ afex_options(emmeans_model = "multivariate")
 # get the data 
 data <- read.csv("../resources/BIRD.csv")
 
-
+data_long$Group <- as.factor(data_long$Group)
 data_long <- data %>%
   pivot_longer(
     cols = 3:5,
@@ -55,7 +60,7 @@ data_long <- data %>%
 # perform the statistical model
 mod <- aov_ez("subj","Yield", data_long, within = "Spacing",between = "Group")
 
-# contrasts
+###### contrasts
 ## only test specified tests
 sum_emm_btwn <- emmeans(mod, "Group")
 # Compute estimated marginal means (EMMs) for specified factors or factor 
@@ -94,7 +99,7 @@ win_con <- list(
 con_win <- contrast(sum_emm_win, win_con)
 confint(con_win) # DOES NOT MATCH PSY OUTPUT
 
-##### Now do interactions
+##### Now do between x within interactions
 sum_emm_int <- emmeans(mod, c("Group", "Spacing"))
 # now defining the contrasts is going to be a bit fiddly but should be 
 # doable
@@ -105,3 +110,18 @@ win_full <- lapply(win_con, function(x) rep(x, each = n_group))
 btwn_full <- lapply(con, function(x) rep(x, times = n_within))
 int_conts <- lapply(btwn_full, function(x) lapply(win_full, function(y) x * y))
 con_int <- contrast(sum_emm_int, int_conts)
+
+# Psy definitions
+nsubs = 16 # total subs
+ngroups = 4 # this is true
+nwithin = 3 
+DFE = nsubs - ngroups
+s = min(ngroups-1, nwithin-1)
+m =  (abs(ngroups - nwithin) -1)/2
+n = (DFE - nwithin)/2
+
+se_c1 <- 1.66
+theta = gcr_crit(.05, s, m, n)
+vE = 12
+cc = sqrt((vE*theta)/(1-theta))
+contrast_ci(se_c1, cc)
