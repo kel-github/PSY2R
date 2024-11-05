@@ -18,7 +18,7 @@ Ambica Golyala
 Mariia Ptukha   
 Sonny Li  
 Kevin Bird   
-
+Vicky He  
 
 <br>
 
