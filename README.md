@@ -16,7 +16,8 @@ Lydia Barnes
 Kateryna Marchenko  
 Ambica Golyala  
 Sonny Li  
-Kevin Bird    
+Kevin Bird 
+Mariia Ptukha   
 
 <br>
 
