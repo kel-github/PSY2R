@@ -15,9 +15,10 @@ Josh Mosse-Robinson
 Lydia Barnes  
 Kateryna Marchenko  
 Ambica Golyala  
-Sonny Li  
-Kevin Bird 
 Mariia Ptukha   
+Sonny Li  
+Kevin Bird   
+
 
 <br>
 
