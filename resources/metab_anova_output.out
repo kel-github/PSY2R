@@ -1,0 +1,81 @@
+%PSY OUT%
+===================================
+               PSY 
+===================================
+ Title: metab_anova
+ Date:  11/6/2024 Time: 2:20:56 PM
+-----------------------------------
+
+ Number of Groups:        1
+ Number of Measurements:  7
+
+ Number of subjects in...
+  Group  1:  74
+
+ Within contrast coefficients
+         Contrast     Measurement...
+                      1    2    3    4    5    6    7
+               W1     1   -1    0    0    0    0    0
+               W2     1    0   -1    0    0    0    0
+               W3     1    0    0   -1    0    0    0
+
+ Means and Standard Deviations
+  Group 1  Overall Mean:       0.171
+   Measurement   1           2           3           4           5           6           7   
+   Mean         0.180       0.139       0.185       0.172       0.181       0.164       0.173
+   SD           0.015       0.012       0.012       0.014       0.014       0.013       0.014
+
+ Means and SDs averaged across groups
+   Measurement   1           2           3           4           5           6           7   
+   Mean         0.180       0.139       0.185       0.172       0.181       0.164       0.173
+   SD           0.015       0.012       0.012       0.014       0.014       0.013       0.014
+ --------------------------------------------------------------------------------------------
+
+              Analysis of Variance Summary Table
+
+              Source        SS      df       MS           F   
+              ------------------------------------------------
+              Between       0.067   73       0.001
+              ------------------------------------------------
+              Within
+              ------------------------------------------------
+              W1            0.063    1       0.063     511.408
+              Error         0.009   73       0.000
+              W2            0.001    1       0.001      27.909
+              Error         0.002   73       0.000
+              W3            0.002    1       0.002      28.855
+              Error         0.006   73       0.000
+              ------------------------------------------------
+
+              Bonferroni 95% Simultaneous Confidence Intervals
+              ------------------------------------------------
+              The CIs refer to mean difference contrasts,
+               with coefficients rescaled if necessary.
+               The rescaled contrast coefficients are:
+
+              Rescaled Within contrast coefficients
+        Contrast        Measurement...
+                         1           2           3           4           5           6           7   
+              W1        1.000      -1.000       0.000       0.000       0.000       0.000       0.000
+              W2        1.000       0.000      -1.000       0.000       0.000       0.000       0.000
+              W3        1.000       0.000       0.000      -1.000       0.000       0.000       0.000
+
+              Raw CIs (scaled in Dependent Variable units)
+              -------------------------------------------------------
+              Contrast      Value        SE           ..CI limits..  
+                                                    Lower       Upper
+              -------------------------------------------------------
+              W1            0.041       0.002       0.037       0.046
+              W2           -0.005       0.001      -0.007      -0.002
+              W3            0.008       0.001       0.004       0.012
+              -------------------------------------------------------
+
+              Approximate Standardized CIs (scaled in Sample SD units)
+              -------------------------------------------------------
+              Contrast      Value        SE           ..CI limits..  
+                                                    Lower       Upper
+              -------------------------------------------------------
+              W1            3.028       0.134       2.700       3.357
+              W2           -0.336       0.064      -0.493      -0.180
+              W3            0.583       0.108       0.317       0.848
+              -------------------------------------------------------
