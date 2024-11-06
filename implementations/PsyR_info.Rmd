@@ -1,0 +1,119 @@
+---
+title: "PsyR"
+output: html_document
+date: "2024-11-06"
+---
+
+## This R package is designed to replicate the result from Psy, which is a software that constructs confidence intervals on contrasts in ANOVA designs. 
+
+Load the necessary packages
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(emmeans)
+library(afex)
+library(readxl)
+library(PsyR)
+```
+
+### This example data is mean metabolic content for 7 brain regions in 74 healthy participants. We want to to compare each region to each other region, so this is a repeated measures design with one within-subject factor
+
+Read the data
+```{r}
+data <- read_excel("../Desktop/mrs/new ratios new masks/74_PME_to_pooled.xlsx")
+```
+
+
+
+
+# Psy output, which we aim to replicate
+
+For this list of contrasts
+
+              1 -1 0 0 0 0 0
+              1 0 -1 0 0 0 0
+              1 0 0 -1 0 0 0
+
+Psy outputs these confidence intervals, when using the post hoc method 
+
+                            Raw CIs (scaled in Dependent Variable units)
+              -------------------------------------------------------
+              Contrast      Value        SE           ..CI limits..  
+                                                    Lower       Upper
+              -------------------------------------------------------
+              W1            0.041       0.002       0.037       0.046
+              W2           -0.005       0.001      -0.007      -0.002
+              W3            0.008       0.001       0.004       0.012
+              -------------------------------------------------------
+
+
+
+# The traditional route - ANOVA, emmeans, Bonferroi
+### Specify a multivariate model for emmeans since repeated measures are present.
+```{r}
+afex_options(emmeans_model = "multivariate")
+```
+
+### Fit the ANOVA model with a repeated measures design with one within-subject factor (region)
+```{r}
+mod <- aov_ez("subject","content", data, within = "region")
+mod
+```
+
+### Compute estimated marginal means (EMMs)
+```{r}
+em_results <- emmeans(mod, ~ region)
+em_results
+```
+
+### Get a contrast table for pairwise comparisons, using Bonferroni correction
+```{r}
+pairwise_comparisons <- contrast(em_results, method = "pairwise", adjust = "bonferroni")
+pairwise_comparisons
+```
+
+### Compute confidence intervals for these contrasts
+```{r}
+confint(pairwise_comparisons)
+```
+
+##The confidence intervals don't match the Psy output.
+For example, the confidence interval for basal_ganglia - cerebellum is 0.048 in Psy, whereas emmeans outputs 0.047.
+
+
+
+# The implementation of the PsyR package on the same data
+### Specify a multivariate model for emmeans since repeated measures are present.
+```{r}
+afex_options(emmeans_model = "multivariate")
+```
+
+### Fit the ANOVA model with a repeated measures design with one within-subject factor (region)
+```{r}
+mod <- aov_ez("subject","content", data, within = "region")
+mod
+```
+
+### Compute estimated marginal means (EMMs)
+```{r}
+em_means <- emmeans(mod, "region")
+em_means
+```
+
+### Get the contrast table for all regional pairwise comparisons 
+```{r}
+pairwise_contrasts <- contrast(em_means, method = "pairwise")
+pairwise_contrasts
+```
+
+# Now we implement the PsyR package to get confidence intervals of the contrasts, using the post hoc method
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+
+psyci (
+  mod,
+  pairwise_contrasts,
+  "bf",
+  family = "w",
+  within_factors = list("region"),
+  alpha = 0.05
+)
+
+```
