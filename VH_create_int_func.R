@@ -13,6 +13,7 @@
 #' @export
 #'
 #' @examples
+#' # e.g. inspired by the iris dataset
 #' factor1_con <- list(
 #' "setosa_vs_versicolor" = c(0.5, -0.5, 0),
 #' "versicolor_vs_virginia" = c(0, 0.5, -0.5)
